@@ -10,13 +10,17 @@
       body {
         background-color: #1584c1;
         margin: 3% 25% 0 25%;
-        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
         flex-direction: column;
         font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .container-title-animation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .title {
@@ -25,78 +29,87 @@
         line-height: 1.2;
         text-align: center;
         font-weight: normal;
-      }
-
-      .container-title-animation {
-        max-width: 900px;
-      }
-
-      .container-text {
-        position: relative;
-        display: inline-block;
+        opacity: 0;
       }
     </style>
 
-    <!-- Element to contain animated typing -->
     <div class="container-title-animation">
       <h2 class="title title-animation">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry.
+        Qualquer texto vai funcionar, é sério qualquer texto, será mesmo????
       </h2>
     </div>
 
+    <div class="container-title-animation">
+      <h2 class="title title-animation">
+        Qualquer texto vai funcionar, é sério qualquer texto, será mesmo????
+      </h2>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const sections = document.querySelectorAll(
-          ".container-title-animation"
-        );
+        gsap.registerPlugin(ScrollTrigger);
 
-        if (!sections.length) return;
+        const animationSplit = () => {
+          const sections = document.querySelectorAll(
+            ".container-title-animation"
+          );
 
-        sections.forEach((section) => {
-          const titles = section.querySelector(".title-animation");
-          const getWord = titles.textContent.trim();
-          titles.textContent = "";
-          const words = getWord.split(" ");
-          const time = 50;
-          let delay = 0;
+          if (!sections.length) return;
 
-          //com as palavras capturadas adiciona novamente ao container
-          words.forEach((text, index) => {
-            const div = document.createElement("div");
-            div.classList.add("container-text");
-            div.textContent = text;
+          sections.forEach((section) => {
+            const title = section.querySelector(".title");
+            const getWord = title.textContent.trim();
+            const words = getWord.split(" ");
 
-            if (index < words.length - 1) {
-              titles.appendChild(document.createTextNode(" "));
-            }
+            const time = 50;
+            let delay = 0;
 
-            const letters = text.split("");
+            title.textContent = "";
+            title.style.opacity = 1;
 
-            letters.forEach((letter) => {
-              const span = document.createElement("span");
-              span.textContent = letter;
-              span.style.opacity = 0;
-              titles.appendChild(span);
+            words.forEach((text, index) => {
+              if (index < words.length) {
+                title.appendChild(document.createTextNode(" "));
+              }
 
-              console.log(span);
+              const letters = text.split("");
 
-              setTimeout(() => {
-                let timer = setInterval(() => {
-                  span.style.opacity = 1;
-                  //     console.log(letter)
-                  //   if (letter < words.length) {
+              letters.forEach((letter) => {
+                const span = document.createElement("span");
+                span.textContent = letter;
+                span.style.opacity = 0;
+                title.appendChild(span);
 
-                  //   } else {
-                  //     clearInterval(timer);
-                  //   }
-                }, time);
-              }, delay);
+                setTimeout(() => {
+                  let timer = setInterval(() => {
+                    if (letter.length == 1) {
+                      span.style.opacity = 1;
+                    } else {
+                      clearInterval(timer);
+                    }
+                  }, time);
+                }, delay);
 
-              delay += time;
+                delay += time;
+              });
             });
           });
+        };
+
+        gsap.to(".container-title-animation", {
+          scrollTrigger: ".box",
+          x: 500,
         });
+
+        const tl = gsap.timeline({});
+
+        setTimeout(() => {
+          animationSplit();
+        }, 1000);
       });
     </script>
   </body>
