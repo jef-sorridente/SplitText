@@ -40,7 +40,8 @@
     <!-- Element to contain animated typing -->
     <div class="container-title-animation">
       <h2 class="title title-animation">
-        Administrar um negócio vai muito além de operar no seu CORE BUSINESS
+        Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry.
       </h2>
     </div>
 
@@ -57,7 +58,7 @@
           const getWord = titles.textContent.trim();
           titles.textContent = "";
           const words = getWord.split(" ");
-          const time = 5;
+          const time = 50;
           let delay = 0;
 
           //com as palavras capturadas adiciona novamente ao container
@@ -73,27 +74,26 @@
             const letters = text.split("");
 
             letters.forEach((letter) => {
-                const span = document.createElement("span");
-                span.textContent = letter;
-                span.style.opacity = 0
-                titles.appendChild(span)
+              const span = document.createElement("span");
+              span.textContent = letter;
+              span.style.opacity = 0;
+              titles.appendChild(span);
 
-                console.log(span)
+              console.log(span);
 
-                setTimeout(() => {
-                    let timer = setInterval(() => {
-                        span.style.opacity = 1
-                //     console.log(letter)
-                //   if (letter < words.length) {
-                    
-                //   } else {
-                //     clearInterval(timer);
-                //   }
+              setTimeout(() => {
+                let timer = setInterval(() => {
+                  span.style.opacity = 1;
+                  //     console.log(letter)
+                  //   if (letter < words.length) {
+
+                  //   } else {
+                  //     clearInterval(timer);
+                  //   }
                 }, time);
               }, delay);
 
-              delay += words.length * time;
-
+              delay += time;
             });
           });
         });
