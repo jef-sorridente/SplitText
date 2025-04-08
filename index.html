@@ -1,77 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Split Text</title>
-  </head>
-  <body>
-    <style>
-      body {
-        background-color: #1584c1;
-        margin: 3% 25% 0 25%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        font-family: Arial, Helvetica, sans-serif;
-      }
 
-      .container-title-animation {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Split Text</title>
+</head>
 
-      .title {
-        font-size: clamp(2rem, 10rem, 5vw);
-        color: #dfdcff;
-        line-height: 1.2;
-        text-align: center;
-        font-weight: normal;
-        opacity: 0;
-      }
-    </style>
+<body>
+  <style>
+    body {
+      background-color: #1584c1;
+      margin: 3% 25% 0 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-    <div class="container-title-animation">
-      <h2 class="title title-animation">
-        Qualquer texto vai funcionar, é sério qualquer texto, será mesmo????
-      </h2>
-    </div>
+    .container-title-animation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-    <div class="container-title-animation">
-      <h2 class="title title-animation">
-        Qualquer texto vai funcionar, é sério qualquer texto, será mesmo????
-      </h2>
-    </div>
+    .title {
+      font-size: clamp(2rem, 10rem, 5vw);
+      color: #dfdcff;
+      line-height: 1.2;
+      text-align: start;
+      font-weight: normal;
+      opacity: 0;
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    .margin {
+      margin: 300px 0;
+    }
+  </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <div class="container-title-animation">
+    <h2 class="title title-animation">
+      Qualquer texto vai funcionar, é sério qualquer texto, será mesmo????
+    </h2>
+  </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
+  <div class="margin"></div>
+
+  <div class="container-title-animation">
+    <h2 class="title title-animation">
+      É sério qualquer texto, será mesmo????
+    </h2>
+  </div>
+
+  <div class="margin"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+
+      const animationSplit = () => {
         gsap.registerPlugin(ScrollTrigger);
 
-        const animationSplit = () => {
-          const sections = document.querySelectorAll(
-            ".container-title-animation"
-          );
+        const sections = document.querySelectorAll(
+          ".container-title-animation"
+        );
 
-          if (!sections.length) return;
+        if (!sections.length) return;
 
-          sections.forEach((section) => {
-            const title = section.querySelector(".title");
-            const getWord = title.textContent.trim();
-            const words = getWord.split(" ");
+        sections.forEach((section) => {
+          const title = section.querySelector(".title");
+          const getWord = title.textContent.trim();
+          const words = getWord.split(" ");
+          const time = 45;
+          let delay = 0;
 
-            const time = 50;
-            let delay = 0;
+          section.style.height = `${section.clientHeight}px`;
+          title.textContent = "";
+          title.style.opacity = 1;
 
-            title.textContent = "";
-            title.style.opacity = 1;
-
+          const titleAnimation = () => {
             words.forEach((text, index) => {
+
               if (index < words.length) {
                 title.appendChild(document.createTextNode(" "));
               }
@@ -85,32 +99,36 @@
                 title.appendChild(span);
 
                 setTimeout(() => {
-                  let timer = setInterval(() => {
-                    if (letter.length == 1) {
-                      span.style.opacity = 1;
-                    } else {
-                      clearInterval(timer);
-                    }
-                  }, time);
+                  span.style.opacity = 1;
                 }, delay);
 
                 delay += time;
               });
             });
-          });
-        };
+          }
 
-        gsap.to(".container-title-animation", {
-          scrollTrigger: ".box",
-          x: 500,
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: section,
+                start: "top center",
+                end: "bottom center",
+                markers: true,
+              },
+            })
+            .to(title, {
+              duration: 0.5,
+              onComplete: () => titleAnimation(),
+            });
+
         });
+      };
 
-        const tl = gsap.timeline({});
 
-        setTimeout(() => {
-          animationSplit();
-        }, 1000);
-      });
-    </script>
-  </body>
+      animationSplit();
+
+    });
+  </script>
+</body>
+
 </html>
