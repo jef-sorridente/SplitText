@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Split Text</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: #1584c1;
+        margin: 3% 25% 0 25%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        flex-direction: column;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .title {
+        font-size: clamp(2rem, 10rem, 5vw);
+        color: #dfdcff;
+        line-height: 1.2;
+        text-align: center;
+        font-weight: normal;
+      }
+
+      .container-title-animation {
+        max-width: 900px;
+      }
+
+      .container-text {
+        position: relative;
+        display: inline-block;
+      }
+    </style>
+
+    <!-- Element to contain animated typing -->
+    <div class="container-title-animation">
+      <h2 class="title title-animation">
+        Administrar um negócio vai muito além de operar no seu CORE BUSINESS
+      </h2>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const sections = document.querySelectorAll(
+          ".container-title-animation"
+        );
+
+        if (!sections.length) return;
+
+        sections.forEach((section) => {
+          const titles = section.querySelector(".title-animation");
+          const getWord = titles.textContent.trim();
+          titles.textContent = "";
+          const words = getWord.split(" ");
+          const time = 5;
+          let delay = 0;
+
+          //com as palavras capturadas adiciona novamente ao container
+          words.forEach((text, index) => {
+            const div = document.createElement("div");
+            div.classList.add("container-text");
+            div.textContent = text;
+
+            if (index < words.length - 1) {
+              titles.appendChild(document.createTextNode(" "));
+            }
+
+            const letters = text.split("");
+
+            letters.forEach((letter) => {
+                const span = document.createElement("span");
+                span.textContent = letter;
+                span.style.opacity = 0
+                titles.appendChild(span)
+
+                console.log(span)
+
+                setTimeout(() => {
+                    let timer = setInterval(() => {
+                        span.style.opacity = 1
+                //     console.log(letter)
+                //   if (letter < words.length) {
+                    
+                //   } else {
+                //     clearInterval(timer);
+                //   }
+                }, time);
+              }, delay);
+
+              delay += words.length * time;
+
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
